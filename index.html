@@ -1,64 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เว็บไซต์ตัวอย่าง</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>ระบบอัพโหลดรูป</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+        .preview img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .details {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>เว็บไซต์ตัวอย่าง</h1>
-            <nav>
-                <ul>
-                    <li><a href="#home">หน้าแรก</a></li>
-                    <li><a href="#about">เกี่ยวกับ</a></li>
-                    <li><a href="#services">บริการ</a></li>
-                    <li><a href="#contact">ติดต่อ</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div class="container">
+        <h2>อัพโหลดรูปภาพและระบุรายละเอียด</h2>
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="imageUpload">เลือกรูปภาพ:</label>
+                <input type="file" id="imageUpload" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="title">ชื่อภาพ:</label>
+                <input type="text" id="title">
+            </div>
+            <div class="form-group">
+                <label for="description">รายละเอียด:</label>
+                <textarea id="description" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="button" onclick="uploadImage()">อัพโหลด</button>
+            </div>
+        </form>
+        <div class="preview" id="preview"></div>
+        <div class="details" id="details"></div>
+    </div>
 
-    <section id="home" class="section">
-        <div class="container">
-            <h2>หน้าแรก</h2>
-            <p>เนื้อหาหน้าแรกของเว็บไซต์</p>
-            <a href="#about" class="btn">อ่านต่อ</a>
-        </div>
-    </section>
+    <script>
+        function uploadImage() {
+            const imageUpload = document.getElementById('imageUpload').files[0];
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
 
-    <section id="about" class="section">
-        <div class="container">
-            <h2>เกี่ยวกับ</h2>
-            <p>เนื้อหาเกี่ยวกับเว็บไซต์</p>
-            <a href="#services" class="btn">ดูบริการ</a>
-        </div>
-    </section>
+            if (imageUpload && title && description) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview').innerHTML = '<img src="' + e.target.result + '" alt="Uploaded Image">';
+                };
+                reader.readAsDataURL(imageUpload);
 
-    <section id="services" class="section">
-        <div class="container">
-            <h2>บริการ</h2>
-            <p>เนื้อหาเกี่ยวกับบริการที่เว็บไซต์ให้บริการ</p>
-            <a href="#contact" class="btn">ติดต่อเรา</a>
-        </div>
-    </section>
-
-    <section id="contact" class="section">
-        <div class="container">
-            <h2>ติดต่อ</h2>
-            <p>ข้อมูลติดต่อเพื่อการติดต่อสอบถาม</p>
-            <a href="#home" class="btn">กลับไปที่บน</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 เว็บไซต์ตัวอย่าง. ทุกสิทธิ์ถูกสงวน.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+                document.getElementById('details').innerHTML = `
+                    <h3>${title}</h3>
+                    <p>${description}</p>
+                `;
+            } else {
+                alert('กรุณาใส่ข้อมูลทั้งหมด');
+            }
+        }
+    </script>
 </body>
 </html>
